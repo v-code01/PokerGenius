@@ -34,9 +34,6 @@ def evaluate_hand_strength(hand, board):
     return min(1.0, max(0.0, base_strength))  # Ensure the strength is within [0, 1]
 
 def evaluate_draws(hand, board):
-    # More nuanced draw evaluation logic
-
-    # Placeholder for flush draw check
     flush_draw_strength = 0.0
     suits = [card[1] for card in board + [hand]]
     for suit in set(suits):
@@ -44,7 +41,6 @@ def evaluate_draws(hand, board):
         if suit_count >= 4:
             flush_draw_strength += 0.1 * suit_count
 
-    # Placeholder for straight draw check
     straight_draw_strength = 0.0
     ranks = sorted([card[0] for card in board + [hand]])
     for _, group in itertools.groupby(enumerate(ranks), lambda x: x[0] - x[1]):
@@ -53,15 +49,9 @@ def evaluate_draws(hand, board):
             straight_draw_strength += 0.05 * consecutive_count
 
     return flush_draw_strength + straight_draw_strength
-
 def evaluate_community_card_synergy(hand, board):
-    # More nuanced evaluation of community card synergy
-
-    # Placeholder for community card synergy logic
-    # Here, we'll use a simplified approach for illustration
     synergy_strength = 0.0
 
-    # Check for pairs, three of a kind, or four of a kind on the board
     card_counts = {card[0]: board.count(card) for card in board}
     for count in card_counts.values():
         if count == 2:
@@ -74,20 +64,13 @@ def evaluate_community_card_synergy(hand, board):
     return synergy_strength
 
 def moment_matching(opponent_equities):
-    # More nuanced moment-matching technique to refine opponent beliefs
-    # Use higher-order moments for a more sophisticated update
-
-    # Placeholder for moment-matching logic
-    # Here, we'll use a more nuanced method for illustration
     prior_mean = np.mean(opponent_equities)
     prior_std = np.std(opponent_equities)
     skewness = np.mean(((opponent_equities - prior_mean) / prior_std) ** 3)
 
-    # Update parameters using moment-matching equations
     updated_opponent_equities = norm.fit(np.random.normal(size=len(opponent_equities), loc=skewness))
     
     return updated_opponent_equities
-
 def make_decision(hand, board):
     my_equity = calculate_equity(hand, board)
     if my_equity > 0.7:
